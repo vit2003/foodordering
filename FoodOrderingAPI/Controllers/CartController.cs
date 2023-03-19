@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.RequestObj.Cart;
 using Service.Interface;
@@ -18,6 +19,7 @@ namespace FoodOrderingAPI.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateCarts(CreateCartParameters param)
         {
             var id = await _cartServices.CreateCart(param);
