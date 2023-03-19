@@ -8,5 +8,6 @@ namespace Domain.Repositories.Interface
         IProductRepository Product { get; }
         ICategoryRepository Category { get; }
         ICartRepository Cart { get; }
+        IUserRepository User { get; }
     }
 }
