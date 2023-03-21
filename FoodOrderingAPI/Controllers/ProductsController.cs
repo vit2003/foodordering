@@ -1,10 +1,12 @@
 ﻿using Domain.Repositories.Interface;
 using FoodOrderingAPI.Resources;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
 using Repository.RequestObj.Basic;
 using Repository.RequestObj.Product;
 using Service.DTOs.BasicRes;
+using Service.Implement;
 using Service.Interface;
 
 namespace FoodOrderingAPI.Controllers
@@ -30,24 +32,12 @@ namespace FoodOrderingAPI.Controllers
 
         [HttpPost]
         [Route("createproducts")]
-        public async Task<IActionResult> createProduct(Product newproduct)
+        [AllowAnonymous]
+        public async Task<IActionResult> createProduct(CreateProductParam newproduct)
         {
-            var product = new Product
-            {
-                ProductId = newproduct.ProductId,
-                ProductName = newproduct.ProductName,
-                ProductImageUrl = newproduct.ProductImageUrl,
-                ProductDescription = newproduct.ProductDescription,
-                CategoryId = newproduct.CategoryId,
-                Quantity = newproduct.Quantity,
-                Price = newproduct.Price,
-                IsDeleted = newproduct.IsDeleted
-            };
-            //Code chưa sửa
-            //_repository.Product.CreateProduct(product);
-            _repository.Product.Create(product);
+            var id = await _productServices.CreateProduct(newproduct);
             await _repository.SaveAsync();
-            return (Ok("New product added"));
+            return (Ok(new {ProductId = id}));
         }
         #endregion
 
@@ -92,6 +82,7 @@ namespace FoodOrderingAPI.Controllers
 
         [HttpGet]
         [Route("category/{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetProduct([FromQuery] PagingRequest parameters, int id)
         {
             var param = new GetProductParam

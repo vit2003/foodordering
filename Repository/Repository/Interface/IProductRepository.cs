@@ -11,8 +11,7 @@ namespace Repository.Repository.Interface
 {
     public interface IProductRepository : IRepositoryBase<Product>
     {
-        void CreateProduct(Product product);
-        Task Update(int ProductId, string ProductName, string ProductImageUrl, string ProductDescription, int CategoryId, int Quantity, double Price, bool IsDeleted, bool trackChanges);
+
 
     }
 }

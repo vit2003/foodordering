@@ -1,5 +1,7 @@
 ﻿using Domain.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
+using Repository.Models;
+using Repository.RequestObj.Cart;
 using Repository.RequestObj.Product;
 using Service.DTOs.BasicRes;
 using Service.DTOs.Product;
@@ -19,6 +21,22 @@ namespace Service.Implement
         public Task<ListResponse<ProductDTO>> GetAllProduct(GetProductParam param)
         {
             throw new NotImplementedException();
+        }
+        public async Task<int> CreateProduct(CreateProductParam param)
+        {
+            var product = new Product { 
+                ProductName = param.ProductName,
+                ProductDescription = param.ProductDescription,
+                Price = param.Price,
+                ProductImageUrl = param.ProductImageUrl,
+                CategoryId = param.CategoryId,
+                IsDeleted = param.IsDeleted,
+            };
+
+            _repositoryManager.Product.Create(product);
+            await _repositoryManager.SaveAsync();
+
+            return product.ProductId;
         }
 
         public async Task<ListResponse<ProductDTO>> GetByCategoryProduct(GetProductParam param)
