@@ -37,7 +37,7 @@ namespace Service.Implement
                 Price = param.Price,
                 ProductImageUrl = param.ProductImageUrl,
                 CategoryId = param.CategoryId,
-                IsDeleted = param.IsDeleted,
+                IsDeleted= false,
             };
 
             _repositoryManager.Product.Create(product);

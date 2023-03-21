@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace Repository.Models;
-
-public partial class Role
+namespace Repository.Models
 {
-    [Key]
-    public int RoleId { get; set; }
+    public partial class Role
+    {
+        public Role()
+        {
+            Users = new HashSet<User>();
+        }
 
-    [StringLength(50)]
-    public string RoleName { get; set; } = null!;
+        public int RoleId { get; set; }
+        public string RoleName { get; set; } = null!;
 
-    [InverseProperty("Role")]
-    public virtual ICollection<User> Users { get; } = new List<User>();
+        public virtual ICollection<User> Users { get; set; }
+    }
 }

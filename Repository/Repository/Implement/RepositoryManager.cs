@@ -1,5 +1,5 @@
 ﻿using Domain.Repositories.Interface;
-using FoodOrderingAPI.Repository;
+using Repository;
 using Repository.Repository.Implement;
 using Repository.Repository.Interface;
 using System;

@@ -1,31 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace Repository.Models;
-
-public partial class Order
+namespace Repository.Models
 {
-    [Key]
-    public int Id { get; set; }
+    public partial class Order
+    {
+        public Order()
+        {
+            ProductContents = new HashSet<ProductContent>();
+        }
 
-    public int? UserId { get; set; }
+        public int Id { get; set; }
+        public int? UserId { get; set; }
+        public DateTime? DeliveryTime { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public string? Address { get; set; }
 
-    [Column(TypeName = "datetime")]
-    public DateTime? DeliveryTime { get; set; }
-
-    [Column(TypeName = "datetime")]
-    public DateTime? OrderDate { get; set; }
-
-    [Unicode(false)]
-    public string? Address { get; set; }
-
-    [InverseProperty("Order")]
-    public virtual ICollection<ProductContent> ProductContents { get; } = new List<ProductContent>();
-
-    [ForeignKey("UserId")]
-    [InverseProperty("Orders")]
-    public virtual User? User { get; set; }
+        public virtual User? User { get; set; }
+        public virtual ICollection<ProductContent> ProductContents { get; set; }
+    }
 }

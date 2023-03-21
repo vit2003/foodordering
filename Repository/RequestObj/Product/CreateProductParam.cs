@@ -20,7 +20,5 @@ namespace Repository.RequestObj.Product
         public int? Quantity { get; set; }
 
         public double? Price { get; set; }
-
-        public bool? IsDeleted { get; set; }
     }
 }

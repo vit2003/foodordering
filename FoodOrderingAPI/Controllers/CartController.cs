@@ -44,7 +44,7 @@ namespace FoodOrderingAPI.Controllers
         {
             var result = await _cartServices.GetCartDetail(cartId);
 
-            return Ok(new {message = "Delete success"});
+            return Ok(result);
         }
     }
 }

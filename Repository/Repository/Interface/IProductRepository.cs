@@ -11,7 +11,5 @@ namespace Repository.Repository.Interface
 {
     public interface IProductRepository : IRepositoryBase<Product>
     {
-
-
     }
 }

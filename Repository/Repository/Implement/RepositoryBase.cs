@@ -1,5 +1,5 @@
 ﻿using Domain.Repositories.Interface;
-using FoodOrderingAPI.Repository;
+using Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

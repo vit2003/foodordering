@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace Repository.Models;
-
-public partial class Cart
+namespace Repository.Models
 {
-    [Key]
-    public int CartId { get; set; }
+    public partial class Cart
+    {
+        public Cart()
+        {
+            ProductContents = new HashSet<ProductContent>();
+        }
 
-    public int? UserId { get; set; }
+        public int CartId { get; set; }
+        public int? UserId { get; set; }
+        public bool? IsActive { get; set; }
 
-    public bool? IsActive { get; set; }
-
-    [InverseProperty("Cart")]
-    public virtual ICollection<ProductContent> ProductContents { get; } = new List<ProductContent>();
-
-    [ForeignKey("UserId")]
-    [InverseProperty("Carts")]
-    public virtual User? User { get; set; }
+        public virtual User? User { get; set; }
+        public virtual ICollection<ProductContent> ProductContents { get; set; }
+    }
 }

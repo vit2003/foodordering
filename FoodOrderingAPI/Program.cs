@@ -1,6 +1,6 @@
 using Domain.Repositories.Implement;
 using Domain.Repositories.Interface;
-using FoodOrderingAPI.Repository;
+using Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;

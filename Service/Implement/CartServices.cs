@@ -69,7 +69,7 @@ namespace Service.Implement
                         PricePerOne = x.Price.ToString(),
                         Quantity = x.Quantity,
                         AllPrize = (x.Price * x.Quantity).ToString(),
-                        ProductId = x.IdProduct
+                        ProductId = x.ProductId
                     }).ToList(),
                     Total = cart.ProductContents.Select(x => (x.Price * x.Quantity)).Sum().ToString()
                 };

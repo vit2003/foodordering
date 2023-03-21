@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace Repository.Models;
-
-public partial class Category
+namespace Repository.Models
 {
-    [Key]
-    public int CategoryId { get; set; }
+    public partial class Category
+    {
+        public Category()
+        {
+            Products = new HashSet<Product>();
+        }
 
-    [StringLength(50)]
-    public string? CategoryName { get; set; }
+        public int CategoryId { get; set; }
+        public string? CategoryName { get; set; }
+        public string? CategoryImageUrl { get; set; }
 
-    [StringLength(50)]
-    public string? CategoryImageUrl { get; set; }
-
-    [InverseProperty("Category")]
-    public virtual ICollection<Product> Products { get; } = new List<Product>();
+        public virtual ICollection<Product> Products { get; set; }
+    }
 }
