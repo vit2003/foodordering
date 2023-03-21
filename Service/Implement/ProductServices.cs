@@ -29,6 +29,21 @@ namespace Service.Implement
                 await _repositoryManager.SaveAsync();
             }
         }
+
+        public async Task Update(int productId, UpdateProductParameter param, bool trackChanges)
+        {
+            var product = await _repositoryManager.Product.FindByCondition(x => x.ProductId == productId, trackChanges)
+                .FirstOrDefaultAsync();
+            product.ProductName = param.ProductName;
+            product.ProductDescription = param.ProductDescription;
+            product.ProductImageUrl = param.ProductImageUrl;
+            product.Price = param.Price;
+            product.Quantity = param.Quantity;
+            product.CategoryId = param.CategoryId;
+            _repositoryManager.Product.Update(product);
+            await _repositoryManager.SaveAsync();
+
+        }
         public async Task<int> CreateProduct(CreateProductParam param)
         {
             var product = new Product { 
@@ -37,6 +52,7 @@ namespace Service.Implement
                 Price = param.Price,
                 ProductImageUrl = param.ProductImageUrl,
                 CategoryId = param.CategoryId,
+                Quantity = param.Quantity,
                 IsDeleted= false,
             };
 

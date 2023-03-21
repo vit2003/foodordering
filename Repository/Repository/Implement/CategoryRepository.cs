@@ -15,15 +15,5 @@ namespace Repository.Repository.Implement
         public CategoryRepository(FoodOrderingDBDbContext context) : base(context)
         {
         }
-        public void CreateCategory(Category category) => Create(category);
-        public async Task Update(int CategoryId, string CategoryName, string ImageUrl, bool trackChanges)
-        {
-            var category = await FindByCondition(x => x.CategoryId == CategoryId, trackChanges).FirstOrDefaultAsync();
-
-            category.CategoryName = CategoryName;
-            category.CategoryImageUrl = ImageUrl;
-
-            Update(category);
-        }
     }
 }
