@@ -1,5 +1,7 @@
 ﻿using Domain.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
+using Repository.Models;
+using Repository.RequestObj.Cart;
 using Repository.RequestObj.Product;
 using Service.DTOs.BasicRes;
 using Service.DTOs.Product;
@@ -26,6 +28,22 @@ namespace Service.Implement
                 product.IsDeleted= true;
                 await _repositoryManager.SaveAsync();
             }
+        }
+        public async Task<int> CreateProduct(CreateProductParam param)
+        {
+            var product = new Product { 
+                ProductName = param.ProductName,
+                ProductDescription = param.ProductDescription,
+                Price = param.Price,
+                ProductImageUrl = param.ProductImageUrl,
+                CategoryId = param.CategoryId,
+                IsDeleted = param.IsDeleted,
+            };
+
+            _repositoryManager.Product.Create(product);
+            await _repositoryManager.SaveAsync();
+
+            return product.ProductId;
         }
 
         public async Task<ListResponse<ProductInListDTO>> GetByCategoryProduct(GetProductParam param)
