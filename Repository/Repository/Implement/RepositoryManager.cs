@@ -17,6 +17,7 @@ namespace Domain.Repositories.Implement
         private ICategoryRepository _categoryRepository;
         private ICartRepository _cartRepository;
         private IUserRepository _userRepository;
+        private IProductContentRepository _productContentRepository;
 
         public RepositoryManager(FoodOrderingDBDbContext context)
         {
@@ -27,6 +28,7 @@ namespace Domain.Repositories.Implement
         public ICategoryRepository Category => _categoryRepository == null ? new CategoryRepository(_context) : _categoryRepository;
         public ICartRepository Cart => _cartRepository == null ? new CartRepository(_context) : _cartRepository;
         public IUserRepository User => _userRepository == null ? new UserRepository(_context) : _userRepository;
+        public IProductContentRepository ProductContent => _productContentRepository == null ? new ProductContentRepository(_context) : _productContentRepository;
 
         public Task SaveAsync() => _context.SaveChangesAsync();
     }

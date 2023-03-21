@@ -110,5 +110,23 @@ namespace FoodOrderingAPI.Controllers
 
             return Ok(result);
         }
+
+        [HttpDelete]
+        [Route("{productId}")]
+        public async Task<IActionResult> DeleteProduct(int productId)
+        {
+            await _productServices.Delete(productId);
+
+            return Ok(new { message = "Delete success" });
+        }
+
+        [HttpGet]
+        [Route("{productId}/details")]
+        public async Task<IActionResult> DetailsProduct(int productId)
+        {
+            var result = await _productServices.GetDetail(productId);
+
+            return Ok(result);
+        }
     }
 }

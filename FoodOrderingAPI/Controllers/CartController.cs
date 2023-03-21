@@ -24,7 +24,27 @@ namespace FoodOrderingAPI.Controllers
         {
             var id = await _cartServices.CreateCart(param);
 
-            return Ok(new {cartId = id});
+            return Ok(new { cartId = id });
+        }
+
+        [HttpDelete]
+        [Route("{cartId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateCarts(int cartId)
+        {
+            await _cartServices.DeleteCart(cartId);
+
+            return Ok(new {message = "Delete success"});
+        }
+
+        [HttpGet]
+        [Route("{cartId}/details")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetDetail(int cartId)
+        {
+            var result = await _cartServices.GetCartDetail(cartId);
+
+            return Ok(new {message = "Delete success"});
         }
     }
 }

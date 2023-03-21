@@ -16,33 +16,58 @@ namespace Service.Implement
             _repositoryManager = repositoryManager;
         }
 
-        public Task<ListResponse<ProductDTO>> GetAllProduct(GetProductParam param)
+        public async Task Delete(int productId)
         {
-            throw new NotImplementedException();
+            var product = await _repositoryManager.Product.FindByCondition(x => x.ProductId == productId, true)
+                .FirstOrDefaultAsync();
+
+            if (product != null)
+            {
+                product.IsDeleted= true;
+                await _repositoryManager.SaveAsync();
+            }
         }
 
-        public async Task<ListResponse<ProductDTO>> GetByCategoryProduct(GetProductParam param)
+        public async Task<ListResponse<ProductInListDTO>> GetByCategoryProduct(GetProductParam param)
         {
             var data = await _repositoryManager.Product.FindByCondition(x => x.IsDeleted == false && x.CategoryId == param.CategoryId, true)
                 .Skip((param.PageCurrent - 1) * param.PageSize)
                 .Take(param.PageSize)
-                .Select(x => new ProductDTO
+                .Select(x => new ProductInListDTO
                 {
-                    CategoryId = x.CategoryId,
                     Price = x.Price,
-                    ProductDescription = x.ProductDescription,
                     ProductName = x.ProductName,
                     ProductId = x.ProductId,
                     ProductImageUrl = x.ProductImageUrl,
                     Quantity = x.Quantity
                 }).ToListAsync();
-            return new ListResponse<ProductDTO>
+            return new ListResponse<ProductInListDTO>
             {
                 Count = await _repositoryManager.Product.FindByCondition(x => x.IsDeleted == false && x.CategoryId == param.CategoryId, false).CountAsync(),
                 PageSize = param.PageSize,
                 PageNumber = param.PageCurrent,
                 Data = data
             };
+        }
+
+        public async Task<ProductDTO> GetDetail(int productId)
+        {
+            var product = await _repositoryManager.Product.FindByCondition(x => x.ProductId == productId, true)
+                .Include(x => x.Category).FirstOrDefaultAsync();
+
+            if (product != null)
+                return new ProductDTO
+                {
+                    ProductId = productId,
+                    CategoryName = product.Category.CategoryName,
+                    Price = product.Price,
+                    ProductDescription = product.ProductDescription,
+                    ProductImageUrl = product.ProductImageUrl,
+                    ProductName = product.ProductName,
+                    Quantity = product.Quantity
+                };
+            else
+                return null;
         }
     }
 }

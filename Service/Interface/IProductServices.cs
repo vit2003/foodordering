@@ -6,7 +6,8 @@ namespace Service.Interface
 {
     public interface IProductServices
     {
-        Task<ListResponse<ProductDTO>> GetAllProduct(GetProductParam param);
-        Task<ListResponse<ProductDTO>> GetByCategoryProduct(GetProductParam param);
+        Task Delete(int productId);
+        Task<ListResponse<ProductInListDTO>> GetByCategoryProduct(GetProductParam param);
+        Task<ProductDTO> GetDetail(int productId);
     }
 }

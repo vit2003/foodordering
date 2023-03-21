@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Repository.Models;
 using Service.Interface;
+using System.Net.WebSockets;
 
 namespace FoodOrderingAPI.Controllers
 {
@@ -81,6 +82,15 @@ namespace FoodOrderingAPI.Controllers
             var result = await _categoriesServices.GetListCategories();
 
             return Ok(result);
+        }
+
+        [HttpDelete]
+        [Route("{categoryId}")]
+        public async Task<IActionResult> DeleteCategory(int categoryId)
+        {
+            await _categoriesServices.DeleteCategory(categoryId);
+
+            return Ok(new { Message = "Delete success" });
         }
     }
 }

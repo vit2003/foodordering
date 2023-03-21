@@ -78,6 +78,8 @@ public partial class FoodOrderingDBDbContext : DbContext
             entity.HasOne(d => d.IdProductNavigation).WithMany(p => p.ProductContents).HasConstraintName("FK_ProductContent_Products");
 
             entity.HasOne(d => d.Order).WithMany(p => p.ProductContents).HasConstraintName("FK_ProductContent_Orders");
+            
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductContents).HasConstraintName("FK_ProductContent_Product");
         });
 
         modelBuilder.Entity<Role>(entity =>
