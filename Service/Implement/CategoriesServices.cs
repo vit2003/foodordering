@@ -72,5 +72,24 @@ namespace Service.Implement
                 .ToListAsync();
             return result;
         }
+
+        public async Task Update(int categoryId, UpdateCategoryParameter param, bool trackChanges)
+        {
+            var category = await _repositoryManager.Category.FindByCondition(x => x.CategoryId == categoryId, trackChanges)
+                .FirstOrDefaultAsync();
+            if (category != null)
+            {
+                category.CategoryName = param.CategoryName;
+                category.CategoryImageUrl = param.CategoryImageUrl;
+                
+                _repositoryManager.Category.Update(category);
+                await _repositoryManager.SaveAsync();
+            }
+            else
+            {
+                throw new Exception("Not Founf ID");
+            }
+        }
     }
+    
 }

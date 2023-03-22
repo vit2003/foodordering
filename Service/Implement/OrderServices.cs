@@ -71,5 +71,24 @@ namespace Service.Implement
                 return null;
             }
         }
+
+        public async Task Update(int orderId, UpdateOrderParameter param, bool trackChanges)
+        {
+            var order = await _repositoryManager.Order.FindByCondition(x => x.Id == orderId, trackChanges)
+                .FirstOrDefaultAsync();
+            if (order != null)
+            {
+                order.Address = param.Address;
+                order.DeliveryTime = param.DeliveryTime;
+                order.OrderDate = param.OrderDate;
+
+                _repositoryManager.Order.Update(order);
+                await _repositoryManager.SaveAsync();
+            }
+            else
+            {
+                throw new Exception("Not Founf ID");
+            }
+        }
     }
 }

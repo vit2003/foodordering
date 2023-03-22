@@ -54,7 +54,7 @@ namespace FoodOrderingAPI.Controllers
         /// <param name="CategoryId"></param>
         /// <returns></returns>
         [HttpPut]
-        [Route("update/{ProductId}")]
+        [Route("update/{productId}")]
         [AllowAnonymous]
         //Tạo mới Product ko cần truyền product id. IsDeleted khi tạo tự set = false luôn chứ nếu tạo mà set bằng true thì tạo làm gì.
         //Sau này tạo một object rồi để nó vào parameter của hàm chứ không để nhiều param như v được.
@@ -104,6 +104,7 @@ namespace FoodOrderingAPI.Controllers
 
         [HttpGet]
         [Route("{productId}/details")]
+        [AllowAnonymous]
         public async Task<IActionResult> DetailsProduct(int productId)
         {
             var result = await _productServices.GetDetail(productId);

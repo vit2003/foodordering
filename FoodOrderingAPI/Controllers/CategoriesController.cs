@@ -52,22 +52,14 @@ namespace FoodOrderingAPI.Controllers
         /// <param name="imageurl"></param>
         /// <returns></returns>
         [HttpPut]
-        [Route("Update/{CategoryId}")]
+        [Route("Update/{categoryId}")]
+        [AllowAnonymous]
         //Tạo class UpdateCategoryParam
-        public async Task<IActionResult> UpdateCategory(int CategoryId, string CategoryName, string ImageUrl)
+        public async Task<IActionResult> UpdateCategory(int categoryId, UpdateCategoryParameter param, bool trackChanges)
         {
+            await _categoriesServices.Update(categoryId, param, trackChanges);
 
-            //RepositoryBase đã có hàm update rồi. Chỉ cần gọi ra ở đây là được. Tạo object Model.Category rồi truyền nó vào ko cần viết lại hàm.
-            //await _repository.Category.Update(CategoryId, CategoryName, ImageUrl, trackChanges: false);
-            //Update thì phải get lên trước để kiểm tra xem có object chưa rồi mới cho update
-            var category = await _repository.Category.FindByCondition(x => x.CategoryId == CategoryId, true).FirstOrDefaultAsync();
-            if(category == null)
-            {
-                return Ok(new { UpdateStatus = "Invalid object" });
-            }
-            category.CategoryName = CategoryName;
-            category.CategoryImageUrl= ImageUrl;
-            _repository.Category.Update(category);
+
             await _repository.SaveAsync();
 
             return Ok("Save changes success");

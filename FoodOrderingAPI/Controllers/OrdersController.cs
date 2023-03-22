@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Domain.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.RequestObj.Cart;
+using Repository.RequestObj.Category;
 using Repository.RequestObj.Order;
 using Service.Implement;
 using Service.Interface;
@@ -13,9 +15,11 @@ namespace FoodOrderingAPI.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrderServices _orderServices;
-        public OrdersController(IOrderServices orderServices)
+        private readonly IRepositoryManager _repository;
+        public OrdersController(IOrderServices orderServices, IRepositoryManager repository)
         {
             _orderServices = orderServices;
+            _repository = repository;
         }
         #region
         [HttpPost]
@@ -49,5 +53,17 @@ namespace FoodOrderingAPI.Controllers
             return Ok(result);
         }
         #endregion
+        [HttpPut]
+        [Route("Update/{orderId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> UpdateOrder(int orderId, UpdateOrderParameter param, bool trackChanges)
+        {
+            await _orderServices.Update(orderId, param, trackChanges);
+
+
+            await _repository.SaveAsync();
+
+            return Ok("Save changes success");
+        }
     }
 }

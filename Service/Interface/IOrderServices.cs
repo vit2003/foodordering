@@ -14,5 +14,6 @@ namespace Service.Interface
         Task<int> CreateOrder(CreateOrderParameter param);
         Task DeleteOrder(int id);
         Task<OrderDetailDTO> GetOrderDetail(int id);
+        Task Update(int orderId, UpdateOrderParameter param, bool trackChanges);
     }
 }
