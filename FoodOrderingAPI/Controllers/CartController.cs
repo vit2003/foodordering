@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Domain.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.RequestObj.Cart;
@@ -12,6 +13,7 @@ namespace FoodOrderingAPI.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartServices _cartServices;
+
 
         public CartController(ICartServices cartServices)
         {
@@ -30,7 +32,7 @@ namespace FoodOrderingAPI.Controllers
         [HttpDelete]
         [Route("{cartId}")]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateCarts(int cartId)
+        public async Task<IActionResult> DeleteCarts(int cartId)
         {
             await _cartServices.DeleteCart(cartId);
 

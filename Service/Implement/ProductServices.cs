@@ -34,15 +34,21 @@ namespace Service.Implement
         {
             var product = await _repositoryManager.Product.FindByCondition(x => x.ProductId == productId, trackChanges)
                 .FirstOrDefaultAsync();
-            product.ProductName = param.ProductName;
-            product.ProductDescription = param.ProductDescription;
-            product.ProductImageUrl = param.ProductImageUrl;
-            product.Price = param.Price;
-            product.Quantity = param.Quantity;
-            product.CategoryId = param.CategoryId;
-            _repositoryManager.Product.Update(product);
-            await _repositoryManager.SaveAsync();
-
+            if (product != null)
+            {
+                product.ProductName = param.ProductName;
+                product.ProductDescription = param.ProductDescription;
+                product.ProductImageUrl = param.ProductImageUrl;
+                product.Price = param.Price;
+                product.Quantity = param.Quantity;
+                product.CategoryId = param.CategoryId;
+                _repositoryManager.Product.Update(product);
+                await _repositoryManager.SaveAsync();
+            }
+            else
+            {
+                throw new Exception("Not Founf ID");
+            }
         }
         public async Task<int> CreateProduct(CreateProductParam param)
         {

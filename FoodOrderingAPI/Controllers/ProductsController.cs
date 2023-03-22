@@ -62,7 +62,7 @@ namespace FoodOrderingAPI.Controllers
         {
 
             
-            await _productServices.Update(productId,param, trackChanges: false);
+            await _productServices.Update(productId,param, trackChanges);
 
            
             await _repository.SaveAsync();
