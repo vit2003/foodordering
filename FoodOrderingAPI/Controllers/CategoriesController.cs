@@ -1,7 +1,10 @@
 ﻿using Domain.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Repository.Models;
+using Repository.RequestObj.Category;
+using Service.Implement;
 using Service.Interface;
 using System.Net.WebSockets;
 
@@ -28,20 +31,15 @@ namespace FoodOrderingAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Create")]
+        [AllowAnonymous]
         //ID của các object khi create ko cần truyền. Sau khi SaveAsync chạy nó sẽ tự gắn id cho object luôn. Cụ thể sau khi dòng 35 chạy. category create ở dòng 28 sẽ tự động có ID
         //Tạo folder Category, Tạo class CreateCategoryParam trong đó xong đặt vào dòng 27. Không làm thế này được.
-        public async Task<IActionResult> createCategory(Category newcategory)
+        public async Task<IActionResult> createCategory(CreateCategoryParameter newcategory)
         {
-            var category = new Category
-            {
-                CategoryName = newcategory.CategoryName,
-                CategoryImageUrl = newcategory.CategoryImageUrl,
-            };
-            _repository.Category.Create(category);
+
+            var idcate = await _categoriesServices.CreateCategory(newcategory);
             await _repository.SaveAsync();
-            //Khúc này trả về id của category
-            //return (Ok("New category added"));
-            return Ok(new {CategoryId = category.CategoryId});
+            return (Ok(new { CategoryId = idcate }));
         }
         #endregion
 
@@ -54,22 +52,14 @@ namespace FoodOrderingAPI.Controllers
         /// <param name="imageurl"></param>
         /// <returns></returns>
         [HttpPut]
-        [Route("Update/{CategoryId}")]
+        [Route("Update/{categoryId}")]
+        [AllowAnonymous]
         //Tạo class UpdateCategoryParam
-        public async Task<IActionResult> UpdateCategory(int CategoryId, string CategoryName, string ImageUrl)
+        public async Task<IActionResult> UpdateCategory(int categoryId, UpdateCategoryParameter param, bool trackChanges)
         {
+            await _categoriesServices.Update(categoryId, param, trackChanges);
 
-            //RepositoryBase đã có hàm update rồi. Chỉ cần gọi ra ở đây là được. Tạo object Model.Category rồi truyền nó vào ko cần viết lại hàm.
-            //await _repository.Category.Update(CategoryId, CategoryName, ImageUrl, trackChanges: false);
-            //Update thì phải get lên trước để kiểm tra xem có object chưa rồi mới cho update
-            var category = await _repository.Category.FindByCondition(x => x.CategoryId == CategoryId, true).FirstOrDefaultAsync();
-            if(category == null)
-            {
-                return Ok(new { UpdateStatus = "Invalid object" });
-            }
-            category.CategoryName = CategoryName;
-            category.CategoryImageUrl= ImageUrl;
-            _repository.Category.Update(category);
+
             await _repository.SaveAsync();
 
             return Ok("Save changes success");

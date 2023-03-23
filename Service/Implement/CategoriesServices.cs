@@ -1,5 +1,8 @@
 ﻿using Domain.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
+using Repository.Models;
+using Repository.RequestObj.Category;
+using Repository.RequestObj.Product;
 using Service.DTOs.Category;
 using Service.Interface;
 using System;
@@ -44,6 +47,19 @@ namespace Service.Implement
                 await _repositoryManager.SaveAsync();
             }
         }
+        public async Task<int> CreateCategory(CreateCategoryParameter param)
+        {
+            var category = new Category
+            {
+                CategoryName = param.CategoryName,
+                CategoryImageUrl = param.CategoryImageUrl,
+            };
+
+            _repositoryManager.Category.Create(category);
+            await _repositoryManager.SaveAsync();
+
+            return category.CategoryId;
+        }
 
         public async Task<List<CategoryDTO>> GetListCategories()
         {
@@ -56,5 +72,24 @@ namespace Service.Implement
                 .ToListAsync();
             return result;
         }
+
+        public async Task Update(int categoryId, UpdateCategoryParameter param, bool trackChanges)
+        {
+            var category = await _repositoryManager.Category.FindByCondition(x => x.CategoryId == categoryId, trackChanges)
+                .FirstOrDefaultAsync();
+            if (category != null)
+            {
+                category.CategoryName = param.CategoryName;
+                category.CategoryImageUrl = param.CategoryImageUrl;
+                
+                _repositoryManager.Category.Update(category);
+                await _repositoryManager.SaveAsync();
+            }
+            else
+            {
+                throw new Exception("Not Founf ID");
+            }
+        }
     }
+    
 }

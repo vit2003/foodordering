@@ -53,26 +53,17 @@ namespace FoodOrderingAPI.Controllers
         /// <param name="CategoryId"></param>
         /// <returns></returns>
         [HttpPut]
-        [Route("update/{ProductId}")]
+        [Route("update/{productId}")]
+        [AllowAnonymous]
         //Tạo mới Product ko cần truyền product id. IsDeleted khi tạo tự set = false luôn chứ nếu tạo mà set bằng true thì tạo làm gì.
         //Sau này tạo một object rồi để nó vào parameter của hàm chứ không để nhiều param như v được.
-        public async Task<IActionResult> UpdateProduct(string ProductName, string ProductImageUrl, string ProductDescription, int CategoryId, int Quantity, double Price)
+        public async Task<IActionResult> UpdateProduct(int productId, UpdateProductParameter param, bool trackChanges)
         {
 
-            //Code chưa sửa
-            //await _repository.Product.Update(ProductId, ProductName, ProductImageUrl, ProductDescription, CategoryId, Quantity, Price, IsDeleted, trackChanges: false);
+            
+            await _productServices.Update(productId,param, trackChanges);
 
-            var product = new Product
-            {
-                CategoryId = CategoryId,
-                ProductName = ProductName,
-                IsDeleted = false,
-                Price = Price,
-                ProductDescription = ProductDescription,
-                ProductImageUrl = ProductImageUrl,
-                Quantity = Quantity
-            };
-
+           
             await _repository.SaveAsync();
 
             return Ok("Save changes success");
@@ -112,6 +103,7 @@ namespace FoodOrderingAPI.Controllers
 
         [HttpGet]
         [Route("{productId}/details")]
+        [AllowAnonymous]
         public async Task<IActionResult> DetailsProduct(int productId)
         {
             var result = await _productServices.GetDetail(productId);

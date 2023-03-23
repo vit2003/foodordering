@@ -1,5 +1,4 @@
 ﻿using Domain.Repositories.Implement;
-using Microsoft.EntityFrameworkCore;
 using Repository.Models;
 using Repository.Repository.Interface;
 using System;
@@ -10,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Repository.Repository.Implement
 {
-    public class CategoryRepository : RepositoryBase<Category>, ICategoryRepository
+    public class OrderRepository : RepositoryBase<Order>, IOrderRepository
     {
-        public CategoryRepository(FoodOrderingDBDbContext context) : base(context)
+        public OrderRepository(FoodOrderingDBDbContext context) : base(context)
         {
         }
     }
