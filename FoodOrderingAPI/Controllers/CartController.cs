@@ -30,7 +30,7 @@ namespace FoodOrderingAPI.Controllers
         [HttpDelete]
         [Route("{cartId}")]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateCarts(int cartId)
+        public async Task<IActionResult> DeleteCarts(int cartId)
         {
             await _cartServices.DeleteCart(cartId);
 
@@ -45,6 +45,26 @@ namespace FoodOrderingAPI.Controllers
             var result = await _cartServices.GetCartDetail(cartId);
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("phone_number/{phoneNum}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetByPhoneNum(string phoneNum)
+        {
+            var result = await _cartServices.GetByPhoneNum(phoneNum);
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("{cartId}/to_cart/{productId}/{quantity}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> NewProductContent(int cartId, int productId, int quantity)
+        {
+            await _cartServices.NewProductContent(cartId, productId, quantity);
+
+            return Ok(new {message = "Add success"});
         }
     }
 }

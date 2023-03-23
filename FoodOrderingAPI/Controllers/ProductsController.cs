@@ -29,7 +29,6 @@ namespace FoodOrderingAPI.Controllers
         /// </summary>
         /// <param name="newProduct"></param>
         /// <returns></returns>
-
         [HttpPost]
         [Route("createproducts")]
         [AllowAnonymous]

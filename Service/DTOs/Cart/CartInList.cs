@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace Service.DTOs.Cart
 {
-    public class CartDetailDTO
+    public class CartInList
     {
         public int CartId { get; set; }
-        public List<ProductInCart>? Products { get; set; }
         public string? Total { get; set; }
+        public List<ProductInCartList>? Products { get; set; }
     }
-    public class ProductInCart
+
+    public class ProductInCartList
     {
-        public int? ProductId { get; set;}
+        public int? ProductId { get; set; }
         public string? Name { get; set; }
-        public string? PricePerOne { get; set; }
+        public string? Price { get; set; }
         public int? Quantity { get; set; }
-        public string? AllPrize { get; set; }
     }
 }

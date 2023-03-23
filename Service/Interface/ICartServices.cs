@@ -12,6 +12,8 @@ namespace Service.Interface
     {
         Task<int> CreateCart(CreateCartParameters param);
         Task DeleteCart(int cartId);
+        Task<List<CartInList>> GetByPhoneNum(string phoneNum);
         Task<CartDetailDTO> GetCartDetail(int cartId);
+        Task NewProductContent(int cartId, int productId, int quantity);
     }
 }

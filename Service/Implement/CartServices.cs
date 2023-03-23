@@ -51,6 +51,25 @@ namespace Service.Implement
             await _repositoryManager.SaveAsync();
         }
 
+        public async Task<List<CartInList>> GetByPhoneNum(string phoneNum)
+        {
+            var carts = await _repositoryManager.Cart.FindByCondition(x => x.User!.Mobile == phoneNum, true)
+                .Include(x => x.User).Include(x => x.ProductContents).ThenInclude(x => x.Product).ToListAsync();
+
+            return carts.Select(x => new CartInList
+            {
+                CartId= x.CartId,
+                Products = x.ProductContents.Select(y => new ProductInCartList
+                {
+                    Name = y.Product!.ProductName,
+                    Price = y.Price.ToString(),
+                    ProductId = y.ProductId,
+                    Quantity = y.Quantity,
+                }).ToList(),
+                Total = x.ProductContents?.Select(y => y.Price*y.Quantity).Sum().ToString()
+            }).ToList();
+        }
+
         public async Task<CartDetailDTO> GetCartDetail(int cartId)
         {
             var cart = await _repositoryManager.Cart.FindByCondition(x => x.CartId == cartId, true)
@@ -78,6 +97,40 @@ namespace Service.Implement
             {
                 return null;
             }
+        }
+
+        public async Task NewProductContent(int cartId, int productId, int quantity)
+        {
+            var cart = await _repositoryManager.Cart.FindByCondition(x => x.CartId == cartId, true)
+                .Include(x => x.ProductContents)
+                .FirstOrDefaultAsync();
+            if (cart == null)
+                return;
+            var proInCart = cart!.ProductContents.Where(x => x.ProductId == productId).FirstOrDefault();
+            if(proInCart != null)
+            {
+                if(quantity == 0)
+                {
+                    _repositoryManager.ProductContent.Delete(proInCart);
+                }
+                else
+                {
+                    proInCart.Quantity = quantity;
+                    _repositoryManager.ProductContent.Update(proInCart);
+                }
+            }
+            else
+            {
+                _repositoryManager.ProductContent.Create(new ProductContent
+                {
+                    ProductId = productId,
+                    Quantity = quantity,
+                    CartId = cartId,
+                    Price = await _repositoryManager.Product.FindByCondition(x => x.ProductId == productId, true)
+                    .Select(x => x.Price).FirstOrDefaultAsync()
+                });
+            }
+            await _repositoryManager.SaveAsync();
         }
     }
 }
