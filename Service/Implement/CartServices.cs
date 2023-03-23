@@ -4,11 +4,6 @@ using Repository.Models;
 using Repository.RequestObj.Cart;
 using Service.DTOs.Cart;
 using Service.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Implement
 {
@@ -23,7 +18,7 @@ namespace Service.Implement
 
         public async Task<int> CreateCart(CreateCartParameters param)
         {
-            var cart = new Cart { UserId= param.UserId, IsActive = true };
+            var cart = new Cart { UserId = param.UserId, IsActive = true };
 
             _repositoryManager.Cart.Create(cart);
             await _repositoryManager.SaveAsync();
@@ -37,11 +32,11 @@ namespace Service.Implement
                 .Include(x => x.ProductContents)
                 .FirstOrDefaultAsync();
 
-            if(cart != null)
+            if (cart != null)
             {
-                if(cart.ProductContents.Count() > 0)
+                if (cart.ProductContents.Count() > 0)
                 {
-                    foreach(var pro in cart.ProductContents)
+                    foreach (var pro in cart.ProductContents)
                     {
                         _repositoryManager.ProductContent.Delete(pro);
                     }
@@ -51,14 +46,14 @@ namespace Service.Implement
             await _repositoryManager.SaveAsync();
         }
 
-        public async Task<List<CartInList>> GetByPhoneNum(string phoneNum)
+        public async Task<List<CartInListDTO>> GetByPhoneNum(string phoneNum)
         {
             var carts = await _repositoryManager.Cart.FindByCondition(x => x.User!.Mobile == phoneNum, true)
                 .Include(x => x.User).Include(x => x.ProductContents).ThenInclude(x => x.Product).ToListAsync();
 
-            return carts.Select(x => new CartInList
+            return carts.Select(x => new CartInListDTO
             {
-                CartId= x.CartId,
+                CartId = x.CartId,
                 Products = x.ProductContents.Select(y => new ProductInCartList
                 {
                     Name = y.Product!.ProductName,
@@ -66,7 +61,7 @@ namespace Service.Implement
                     ProductId = y.ProductId,
                     Quantity = y.Quantity,
                 }).ToList(),
-                Total = x.ProductContents?.Select(y => y.Price*y.Quantity).Sum().ToString()
+                Total = x.ProductContents?.Select(y => y.Price * y.Quantity).Sum().ToString()
             }).ToList();
         }
 
@@ -77,7 +72,7 @@ namespace Service.Implement
                 .ThenInclude(x => x.Product)
                 .FirstOrDefaultAsync();
 
-            if(cart != null)
+            if (cart != null)
             {
                 return new CartDetailDTO
                 {
@@ -107,9 +102,9 @@ namespace Service.Implement
             if (cart == null)
                 return;
             var proInCart = cart!.ProductContents.Where(x => x.ProductId == productId).FirstOrDefault();
-            if(proInCart != null)
+            if (proInCart != null)
             {
-                if(quantity == 0)
+                if (quantity == 0)
                 {
                     _repositoryManager.ProductContent.Delete(proInCart);
                 }

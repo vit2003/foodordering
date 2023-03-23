@@ -2,11 +2,9 @@
 using FoodOrderingAPI.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Repository.Models;
 using Repository.RequestObj.Basic;
 using Repository.RequestObj.Product;
 using Service.DTOs.BasicRes;
-using Service.Implement;
 using Service.Interface;
 
 namespace FoodOrderingAPI.Controllers
@@ -36,7 +34,7 @@ namespace FoodOrderingAPI.Controllers
         {
             var id = await _productServices.CreateProduct(newproduct);
             await _repository.SaveAsync();
-            return (Ok(new {ProductId = id}));
+            return (Ok(new { ProductId = id }));
         }
         #endregion
 
@@ -60,10 +58,10 @@ namespace FoodOrderingAPI.Controllers
         public async Task<IActionResult> UpdateProduct(int productId, UpdateProductParameter param, bool trackChanges)
         {
 
-            
-            await _productServices.Update(productId,param, trackChanges);
 
-           
+            await _productServices.Update(productId, param, trackChanges);
+
+
             await _repository.SaveAsync();
 
             return Ok("Save changes success");

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Service.DTOs.Cart
+﻿namespace Service.DTOs.Cart
 {
     public class CartDetailDTO
     {
@@ -14,7 +8,7 @@ namespace Service.DTOs.Cart
     }
     public class ProductInCart
     {
-        public int? ProductId { get; set;}
+        public int? ProductId { get; set; }
         public string? Name { get; set; }
         public string? PricePerOne { get; set; }
         public int? Quantity { get; set; }

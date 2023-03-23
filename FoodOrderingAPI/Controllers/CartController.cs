@@ -1,10 +1,7 @@
-﻿using Domain.Repositories.Interface;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repository.RequestObj.Cart;
 using Service.Interface;
-using System.Runtime.CompilerServices;
 
 namespace FoodOrderingAPI.Controllers
 {
@@ -36,7 +33,7 @@ namespace FoodOrderingAPI.Controllers
         {
             await _cartServices.DeleteCart(cartId);
 
-            return Ok(new {message = "Delete success"});
+            return Ok(new { message = "Delete success" });
         }
 
         [HttpGet]
@@ -66,7 +63,7 @@ namespace FoodOrderingAPI.Controllers
         {
             await _cartServices.NewProductContent(cartId, productId, quantity);
 
-            return Ok(new {message = "Add success"});
+            return Ok(new { message = "Add success" });
         }
     }
 }

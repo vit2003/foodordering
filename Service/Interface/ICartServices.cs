@@ -1,10 +1,5 @@
 ﻿using Repository.RequestObj.Cart;
 using Service.DTOs.Cart;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Interface
 {
@@ -12,7 +7,7 @@ namespace Service.Interface
     {
         Task<int> CreateCart(CreateCartParameters param);
         Task DeleteCart(int cartId);
-        Task<List<CartInList>> GetByPhoneNum(string phoneNum);
+        Task<List<CartInListDTO>> GetByPhoneNum(string phoneNum);
         Task<CartDetailDTO> GetCartDetail(int cartId);
         Task NewProductContent(int cartId, int productId, int quantity);
     }

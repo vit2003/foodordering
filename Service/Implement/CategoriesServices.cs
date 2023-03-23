@@ -2,15 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Repository.Models;
 using Repository.RequestObj.Category;
-using Repository.RequestObj.Product;
 using Service.DTOs.Category;
 using Service.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Implement
 {
@@ -27,15 +20,15 @@ namespace Service.Implement
         {
             var cate = await _repositoryManager.Category.FindByCondition(x => x.CategoryId == categoryId, true)
                 .Include(x => x.Products).ThenInclude(y => y.ProductContents).FirstOrDefaultAsync();
-            if(cate != null)
+            if (cate != null)
             {
-                if(cate.Products.Count() > 0)
+                if (cate.Products.Count() > 0)
                 {
-                    foreach(var product in cate.Products)
+                    foreach (var product in cate.Products)
                     {
-                        if(product.ProductContents.Count() > 0)
+                        if (product.ProductContents.Count() > 0)
                         {
-                            foreach(var proContent in product.ProductContents)
+                            foreach (var proContent in product.ProductContents)
                             {
                                 _repositoryManager.ProductContent.Delete(proContent);
                             }
@@ -81,7 +74,7 @@ namespace Service.Implement
             {
                 category.CategoryName = param.CategoryName;
                 category.CategoryImageUrl = param.CategoryImageUrl;
-                
+
                 _repositoryManager.Category.Update(category);
                 await _repositoryManager.SaveAsync();
             }
@@ -91,5 +84,5 @@ namespace Service.Implement
             }
         }
     }
-    
+
 }

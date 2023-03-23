@@ -2,11 +2,6 @@
 using Repository;
 using Repository.Repository.Implement;
 using Repository.Repository.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Repositories.Implement
 {
@@ -17,8 +12,8 @@ namespace Domain.Repositories.Implement
         private ICategoryRepository _categoryRepository;
         private ICartRepository _cartRepository;
         private IUserRepository _userRepository;
-        private IOrderRepository _orderRepository;
         private IProductContentRepository _productContentRepository;
+        private IOrderRepository _orderRepository;
 
         public RepositoryManager(FoodOrderingDBDbContext context)
         {
@@ -29,8 +24,8 @@ namespace Domain.Repositories.Implement
         public ICategoryRepository Category => _categoryRepository == null ? new CategoryRepository(_context) : _categoryRepository;
         public ICartRepository Cart => _cartRepository == null ? new CartRepository(_context) : _cartRepository;
         public IUserRepository User => _userRepository == null ? new UserRepository(_context) : _userRepository;
-        public IOrderRepository Order => _orderRepository == null ? new OrderRepository(_context) : _orderRepository;
         public IProductContentRepository ProductContent => _productContentRepository == null ? new ProductContentRepository(_context) : _productContentRepository;
+        public IOrderRepository Order => _orderRepository == null ? new OrderRepository(_context) : _orderRepository;
 
         public Task SaveAsync() => _context.SaveChangesAsync();
     }

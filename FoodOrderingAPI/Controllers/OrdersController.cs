@@ -1,11 +1,7 @@
 ﻿using Domain.Repositories.Interface;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Repository.RequestObj.Cart;
-using Repository.RequestObj.Category;
 using Repository.RequestObj.Order;
-using Service.Implement;
 using Service.Interface;
 
 namespace FoodOrderingAPI.Controllers

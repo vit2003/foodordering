@@ -3,7 +3,7 @@ using Repository.Models;
 
 namespace Repository.Repository.Interface
 {
-    public interface ICategoryRepository : IRepositoryBase<Category>
+    public interface ICartRepository : IRepositoryBase<Cart>
     {
     }
 }

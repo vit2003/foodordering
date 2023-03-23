@@ -1,11 +1,5 @@
-﻿using Repository.RequestObj.Cart;
-using Repository.RequestObj.Order;
+﻿using Repository.RequestObj.Order;
 using Service.DTOs.Order;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Interface
 {

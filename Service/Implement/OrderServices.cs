@@ -2,14 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Repository.Models;
 using Repository.RequestObj.Order;
-using Service.DTOs.Cart;
 using Service.DTOs.Order;
 using Service.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Implement
 {
@@ -34,6 +28,16 @@ namespace Service.Implement
             _repositoryManager.Order.Create(order);
             await _repositoryManager.SaveAsync();
 
+            var proContent = await _repositoryManager.ProductContent.FindByCondition(x => x.CartId == param.CartId, true)
+                .ToListAsync();
+
+            foreach(var item in proContent)
+            {
+                item.OrderId = order.Id;
+                _repositoryManager.ProductContent.Update(item);
+                await _repositoryManager.SaveAsync();
+            }
+
             return order.Id;
         }
 
@@ -42,7 +46,7 @@ namespace Service.Implement
             var order = await _repositoryManager.Order.FindByCondition(x => x.Id == id, true).FirstOrDefaultAsync();
 
             if (order != null)
-            {                
+            {
                 _repositoryManager.Order.Delete(order);
             }
             await _repositoryManager.SaveAsync();
@@ -52,18 +56,29 @@ namespace Service.Implement
         {
             var order = await _repositoryManager.Order.FindByCondition(x => x.Id == id, true)
                 .Include(x => x.User)
+                .Include(x => x.ProductContents)
+                .ThenInclude(x => x.Product)
                 .FirstOrDefaultAsync();
             if (order != null)
             {
                 return new OrderDetailDTO
                 {
                     Id = order.Id,
-                    UserName = order.User.UserName,
+                    UserName = order.User!.UserName,
                     DeliveryTime = order.DeliveryTime,
                     OrderDate = order.OrderDate,
                     Address = order.Address,
-                    Phone = order.User.Mobile,
-                    UserEmail = order.User.Email,
+                    Phone = order.User!.Mobile,
+                    UserEmail = order.User!.Email,
+                    Products = order.ProductContents.Select(y => new DTOs.Cart.ProductInCart
+                    {
+                        Name = y.Product!.ProductName,
+                        PricePerOne = y.Price.ToString(),
+                        ProductId = y.ProductId,
+                        Quantity = y.Quantity,
+                        AllPrize = (y.Price*y.Quantity).ToString()
+                    }).ToList(),
+                    Total = order.ProductContents.Select(x => x.Quantity*x.Price).Sum().ToString()
                 };
             }
             else

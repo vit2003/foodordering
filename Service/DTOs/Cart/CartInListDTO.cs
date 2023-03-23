@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Service.DTOs.Cart
+﻿namespace Service.DTOs.Cart
 {
-    public class CartInList
+    public class CartInListDTO
     {
         public int CartId { get; set; }
         public string? Total { get; set; }

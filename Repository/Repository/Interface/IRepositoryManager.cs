@@ -9,7 +9,7 @@ namespace Domain.Repositories.Interface
         ICategoryRepository Category { get; }
         ICartRepository Cart { get; }
         IUserRepository User { get; }
-        IOrderRepository Order { get; }
         IProductContentRepository ProductContent { get; }
+        IOrderRepository Order { get; }
     }
 }

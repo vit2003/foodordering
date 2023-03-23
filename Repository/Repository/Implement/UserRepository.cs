@@ -1,8 +1,8 @@
-﻿using Domain.Repositories.Interface;
-using Repository;
+﻿using Domain.Repositories.Implement;
 using Repository.Models;
+using Repository.Repository.Interface;
 
-namespace Domain.Repositories.Implement
+namespace Repository.Repository.Implement
 {
     public class UserRepository : RepositoryBase<User>, IUserRepository
     {
